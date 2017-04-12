@@ -9,7 +9,7 @@ var Encryption = require('./encryption.js');
 let initial_app_strings = "geORNtsZe5I4lRGjG9GZiA";
 // Possible value are NE (Europe), NNA (North America) and NCI (Canada).
 let region_code = process.env.regioncode;
-// You should store your username and password as environment variables. 
+// You should store your username and password as environment variables.
 // If you don't you can hard code them in the following variables.
 let username = process.env.username; // Your NissanConnect username or email address.
 let password = encrypt(process.env.password); // Your NissanConnect account password.
@@ -24,7 +24,7 @@ let sessionid, vin, loginFailureCallback;
 * successCallback
 * failureCallback
 **/
-function sendRequest(action, requestData, successCallback, failureCallback) {	
+function sendRequest(action, requestData, successCallback, failureCallback) {
 	const options = {
 		hostname: "gdcportalgw.its-mo.com",
 		port: 443,
@@ -59,18 +59,18 @@ function sendRequest(action, requestData, successCallback, failureCallback) {
 			}
 		});
 	});
-	
+
 	req.write(requestData);
 	req.end();
 }
 
 /**
 * Log the current user in to retrieve a valid session token.
-* 
+*
 * successCallback
 **/
 function login(successCallback) {
-	sendRequest("UserLoginRequest.php", 
+	sendRequest("UserLoginRequest.php",
 	"UserId=" + username +
 	"&initial_app_strings=" + initial_app_strings +
 	"&RegionCode=" + region_code +
@@ -83,10 +83,10 @@ function login(successCallback) {
 			vin = encodeURIComponent(loginResponse.VehicleInfoList.vehicleInfo[0].vin);
 		} else  {
 			sessionid = encodeURIComponent(loginResponse.vehicleInfo[0].custom_sessionid);
-			vin = encodeURIComponent(loginResponse.vehicleInfo[0].vin);			
+			vin = encodeURIComponent(loginResponse.vehicleInfo[0].vin);
 		}
 		successCallback();
-	}, 
+	},
 	loginFailureCallback);
 }
 
